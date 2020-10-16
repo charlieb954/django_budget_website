@@ -17,4 +17,8 @@
 5. cd into the cloned folder
 6. python3 manage.py runserver
 
-![](example_imgs/add_expense.png =250x250)
+### screenshot examples :
+
+![](example_imgs/add_expense.png)
+
+![](example_imgs/login.png)
