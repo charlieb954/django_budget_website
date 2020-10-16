@@ -9,10 +9,10 @@ View Budgets
 <form method="post" action="/view/" class="form-group">
     {% csrf_token %} <!-- required for security when using form --> 
     <button class="taskDelete" name="taskDelete">Delete Tasks</button>
-        {% for td in user.todolist.all %}
+        {% for b in user.budget.all %}
             <p>
-                <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ td.id }}" value="{{ td.id }}">
-                <a href="/{{td.id}}">{{td.name}}</a>
+                <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ b.id }}" value="{{ b.id }}">
+                <a href="/{{b.id}}">{{b.name}}</a>
             </p>
         {% endfor %}
 {% endblock %}
