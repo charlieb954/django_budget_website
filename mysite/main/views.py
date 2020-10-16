@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from .models import Budget, Item
 from .forms import CreateNewList
 
@@ -9,6 +10,7 @@ def chunker(ls, n):
     for i in range(0, len(ls), n):
         yield ls[i:i+n]
 
+@login_required(login_url='/login/')
 def index(request, id):
     ls = Budget.objects.get(id=id)
     
@@ -42,6 +44,7 @@ def index(request, id):
 def home(request):
     return render(request, "main/home.html", {})
 
+@login_required(login_url='/login/')
 def create(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
@@ -63,6 +66,7 @@ def create(request):
         form = CreateNewList()
     return render(request, "main/create.html", {"form":form})
 
+@login_required(login_url='/login/')
 def view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
