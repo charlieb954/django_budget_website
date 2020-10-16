@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .models import ToDoList, Item
+from .models import Budget, Item
 from .forms import CreateNewList
 
 # Create your views here.
@@ -10,9 +10,9 @@ def chunker(ls, n):
         yield ls[i:i+n]
 
 def index(request, id):
-    ls = ToDoList.objects.get(id=id)
+    ls = Budget.objects.get(id=id)
     
-    if ls in request.user.todolist.all():
+    if ls in request.user.budget.all():
         if request.method == "POST":                    
             if request.POST.get("newItem"):
                 txt = request.POST.get("outgoing")
@@ -27,7 +27,7 @@ def index(request, id):
                 b = list(chunker(a, 2))
                 
                 obj = Item.objects.all()
-                print(obj)
+                obj = [ob for ob in obj if str(ob.budget) == str(ls.name)]
                 
                 i = 0
                 for ob in obj:
@@ -50,11 +50,14 @@ def create(request):
         form = CreateNewList(request.POST)
         if form.is_valid():
             n = form.cleaned_data["name"]
-            t = ToDoList(name=n)
-            t.save()
-            request.user.todolist.add(t)
-            
-            return HttpResponseRedirect(f"/{t.id}")
+            if Budget.objects.filter(name=n).exists():
+                b = Budget.objects.get(name=n)
+                return HttpResponseRedirect(f"/{b.id}")
+            else:
+                b = Budget(name=n)
+                b.save()
+                request.user.budget.add(b)
+                return HttpResponseRedirect(f"/{b.id}")
     
     else:
         form = CreateNewList()
@@ -64,10 +67,10 @@ def view(request):
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/login")
     
-    if "taskDelete" in request.POST: #checking if there is a request to delete a todo
-        checked_list = request.POST["checkedbox"] #checked todos to be deleted
-        todo = ToDoList.objects.get(id=checked_list) #getting todo id
-        todo.delete() #deleting todo
+    if "taskDelete" in request.POST: #checking if there is a request to delete a bud
+        checked_list = request.POST["checkedbox"] #checked bud to be deleted
+        bud = Budget.objects.get(id=checked_list) #getting bud id
+        bud.delete() #deleting bud
         return render(request, "main/view.html")
     
     return render(request, "main/view.html", {})
