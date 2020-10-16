@@ -6,8 +6,8 @@
     - python3 manage.py migrate -> creates neccessary database tables
     - python3 manage.py makemigrations -> store the changes made as a migration
 
-### How to run the django application
-1. git clone <this repo url>
+### how to run the django application
+1. git clone **this repo url**
 2. pip install -r requirements.txt
 3. python3 -m venv venv/ 
     - Creates an environment called venv/ you can replace “venv/” with a different name for your environment
