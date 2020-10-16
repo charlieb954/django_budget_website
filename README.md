@@ -16,3 +16,5 @@
     - source venv/bin/activate
 5. cd into the cloned folder
 6. python3 manage.py runserver
+
+![](example_imgs/add_expense.png =250x250)
