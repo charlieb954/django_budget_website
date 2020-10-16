@@ -5,6 +5,7 @@
     - python3 manage.py runserver -> to run the project
     - python3 manage.py migrate -> creates neccessary database tables
     - python3 manage.py makemigrations -> store the changes made as a migration
+    - python3 manage.py migrate --run-syncdb -> table_not_found error, try this
 
 ### how to run the django application
 1. git clone **this repo url**
