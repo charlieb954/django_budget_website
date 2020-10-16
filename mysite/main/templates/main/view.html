@@ -8,7 +8,7 @@ View Budgets
 <h1>View Budgets</h1>
 <form method="post" action="/view/" class="form-group">
     {% csrf_token %} <!-- required for security when using form --> 
-    <button class="taskDelete" name="taskDelete">Delete Tasks</button>
+    <button class="taskDelete" name="taskDelete">Delete Budget</button>
         {% for b in user.budget.all %}
             <p>
                 <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ b.id }}" value="{{ b.id }}">
