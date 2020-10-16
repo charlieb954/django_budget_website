@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Create Budgets{% endblock %}
+
+{% block content %}
+
+<h1>Create Budgets</h1>
+
+<ul>
+    <li><p>Create a budget called "Income" and specify all household income.</p></li>
+    <li><p>Create a budget called "Outgoings and specify all household bills.</p></li>
+</ul>
+<form method="post" action="/create/" class="form-group">
+    {% csrf_token %} <!-- required for security when using form --> 
+    
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button type="submit" name="save" class="btn btn-success">
+                Create Budget
+            </button>
+        </div>
+    {{form.name}}
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% block title %}View List{% endblock %}
+
+{% block content %}
+
+<h1>
+    {{ls.name}}
+</h1>
+
+<form method="post" action="#">
+    {% csrf_token %}
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Monthly Income/Outgoing</th>
+            <th scope="col">Monthly Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+    {% for item in ls.item_set.all %}
+        <tr>
+          <td><input name="items" type="text" value="{{item.text}}" id="{{item.id}}"></input></td>
+          <td><input name="items" type="text" value="£{{item.cost}}" id="{{item.id}}"></input></td>
+        </tr>
+    {% endfor %}
+        </tbody>
+        </table>
+        <button type="submit" name="update" value="update" class="btn btn-primary">
+            Update
+        </button>
+        <br><br>
+    
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button type="submit" name="newItem" value="newItem" class="btn btn-success">
+                Add item
+            </button>
+        </div>
+        <input type="text" name="outgoing" placeholder="Monthly outgoing" class="form-control">
+        <input type="number" name="cost" min="0.01" step="0.01" placeholder="Monthly cost in £s" class="form-control">
+    </div>
+</form>
+
+{% endblock %}

@@ -1,0 +1,7 @@
+venv/
+mysite/db.sqlite3
+mysite/main/__pycache__/
+mysite/mysite/__pycache__/
+mysite/mysite/settings.py
+mysite/register/__pycache__/
+mysite/register/migrations/

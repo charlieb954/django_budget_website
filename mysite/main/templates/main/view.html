@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+
+{% block title %}
+View Budgets
+{% endblock %}
+
+{% block content %}
+<h1>View Budgets</h1>
+<form method="post" action="/view/" class="form-group">
+    {% csrf_token %} <!-- required for security when using form --> 
+    <button class="taskDelete" name="taskDelete">Delete Tasks</button>
+        {% for td in user.todolist.all %}
+            <p>
+                <input type="checkbox" class="taskCheckbox" name="checkedbox" id="{{ td.id }}" value="{{ td.id }}">
+                <a href="/{{td.id}}">{{td.name}}</a>
+            </p>
+        {% endfor %}
+{% endblock %}
