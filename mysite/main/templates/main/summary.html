@@ -7,13 +7,22 @@
     Budget Summary
 </h1>
 
-<p>
-    Total income = £{{ total_income }}
-</p>
+{% if div %}
+    <p>
+        Total monthly income = £{{ total_income }}
+    </p>
 
-<p>
-    Total outgoings = £{{ total_outgoings }}
-    {{div|safe}}
-</p>
+    <p>
+        Total monthly outgoings = £{{ total_outgoings }}
+    </p>
 
+    <p>
+        Total remaining = £{{ total_remaining }}
+        {{div|safe}}
+    </p>
+{% else %}
+    <p>
+        Please complete your budgets before using the summary
+    </p>
+{% endif %}
 {% endblock %}
