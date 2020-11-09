@@ -56,8 +56,9 @@ def create(request):
         form = CreateNewList(request.POST)
         if form.is_valid():
             n = form.cleaned_data["name"]
-            if Budget.objects.filter(name=n).exists():
-                b = Budget.objects.get(name=n)
+            #if Budget.objects.filter(name=n).exists():
+            if n in [str(i) for i in request.user.budget.all()]:
+                b = request.user.budget.get(name=n)
                 return HttpResponseRedirect(f"/{b.id}")
             else:
                 b = Budget(name=n)
@@ -86,28 +87,36 @@ def view(request):
 def budget_summary(request):
     income = []
     outgoings = []
+
+    for i in request.user.budget.all():
+        for test in i.item_set.all():
+            if str(i) == "Income":
+                income.append(float(test.cost))
+            elif str(i) == "Outgoings":
+                outgoings.append(float(test.cost))
     
-    for i in Item.objects.all():
-        if str(i.budget) == "Income":
-            income.append(float(i.cost))
-        elif str(i.budget) == "Outgoings":
-            outgoings.append(float(i.cost))
-            
-    total_income = format(sum(income), '.2f')
-    total_outgoings = format(sum(outgoings), '.2f')
-
-    x = ['Income', 'Outgoings']
-    y = [sum(income), sum(outgoings)]
-
-    # Use the hovertext kw argument for hover text
-    fig = go.Figure(data=[go.Bar(x=x, y=y,
-                hovertext=[f"£{total_income}", f"£{total_outgoings}"])])
-
-    fig.update_layout(title_text='Budget Bar Chart',
-                          xaxis_title="Budget type",
-                          yaxis_title="Amount (in £s)",)
+    print(income, outgoings)        
     
-    div = plot(fig, output_type='div')
+    if income and outgoings:
+        total_income = format(sum(income), '.2f')
+        total_outgoings = format(sum(outgoings), '.2f')
+
+        x = ['Income', 'Outgoings']
+        y = [sum(income), sum(outgoings)]
+
+        fig = go.Figure(data=[go.Bar(x=x, y=y,
+                    hovertext=[f"£{total_income}", f"£{total_outgoings}"])])
+
+        fig.update_layout(title_text='Budget Bar Chart',
+                            xaxis_title="Budget type",
+                            yaxis_title="Amount (in £s)",)
+        
+        div = plot(fig, output_type='div')
+    
+    else:
+        total_income = None
+        total_outgoings = None
+        div = None
     
     return render(request, "main/summary.html", {"total_income": total_income,
                                                  "total_outgoings": total_outgoings,
