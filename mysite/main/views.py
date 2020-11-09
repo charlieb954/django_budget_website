@@ -89,35 +89,34 @@ def budget_summary(request):
     outgoings = []
 
     for i in request.user.budget.all():
-        for test in i.item_set.all():
+        for n in i.item_set.all():
             if str(i) == "Income":
-                income.append(float(test.cost))
+                income.append(float(n.cost))
             elif str(i) == "Outgoings":
-                outgoings.append(float(test.cost))
-    
-    print(income, outgoings)        
+                outgoings.append(float(n.cost))      
     
     if income and outgoings:
         total_income = format(sum(income), '.2f')
         total_outgoings = format(sum(outgoings), '.2f')
+        total_remaining = format(sum(income)-sum(outgoings), '.2f')
 
         x = ['Income', 'Outgoings']
         y = [sum(income), sum(outgoings)]
 
         fig = go.Figure(data=[go.Bar(x=x, y=y,
-                    hovertext=[f"£{total_income}", f"£{total_outgoings}"])])
+                        hovertext=[f"£{total_income}", f"£{total_outgoings}"])])
 
         fig.update_layout(title_text='Budget Bar Chart',
                             xaxis_title="Budget type",
                             yaxis_title="Amount (in £s)",)
         
+        fig.update_traces(marker_color=['green', 'red'])
+        
         div = plot(fig, output_type='div')
-    
+
+        return render(request, "main/summary.html", {"total_income": total_income,
+                                                    "total_outgoings": total_outgoings,
+                                                    "total_remaining": total_remaining,
+                                                    "div": div})
     else:
-        total_income = None
-        total_outgoings = None
-        div = None
-    
-    return render(request, "main/summary.html", {"total_income": total_income,
-                                                 "total_outgoings": total_outgoings,
-                                                 "div": div})
+        return render(request, "main/summary.html")
