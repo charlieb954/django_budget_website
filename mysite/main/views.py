@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Budget, Item
 from .forms import CreateNewList
 
+import plotly.graph_objs as go
+from plotly.offline import plot
+
 # Create your views here.
 
 def chunker(ls, n):
@@ -78,3 +81,34 @@ def view(request):
         return render(request, "main/view.html")
     
     return render(request, "main/view.html", {})
+
+@login_required(login_url='/login/')
+def budget_summary(request):
+    income = []
+    outgoings = []
+    
+    for i in Item.objects.all():
+        if str(i.budget) == "Income":
+            income.append(float(i.cost))
+        elif str(i.budget) == "Outgoings":
+            outgoings.append(float(i.cost))
+            
+    total_income = format(sum(income), '.2f')
+    total_outgoings = format(sum(outgoings), '.2f')
+
+    x = ['Income', 'Outgoings']
+    y = [sum(income), sum(outgoings)]
+
+    # Use the hovertext kw argument for hover text
+    fig = go.Figure(data=[go.Bar(x=x, y=y,
+                hovertext=[f"£{total_income}", f"£{total_outgoings}"])])
+
+    fig.update_layout(title_text='Budget Bar Chart',
+                          xaxis_title="Budget type",
+                          yaxis_title="Amount (in £s)",)
+    
+    div = plot(fig, output_type='div')
+    
+    return render(request, "main/summary.html", {"total_income": total_income,
+                                                 "total_outgoings": total_outgoings,
+                                                 "div": div})
