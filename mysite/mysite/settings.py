@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 import os
+from django.core.management.utils import get_random_secret_key 
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,10 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING bypassed by creating a new key and storing orginal key in a separate ignored file
 try:
     from .secret_key import SECRET_KEY
-except ImportError:
-    SETTINGS_DIR = os.path.abspath(os.path.dirname(__file__))
-    generate_secret_key(os.path.join(SETTINGS_DIR, 'secret_key.py'))
-    from .secret_key import SECRET_KEY
+except ModuleNotFoundError:
+    SECRET_KEY = get_random_secret_key()
+    with open("secret_key.py", 'w') as f:
+        f.write(f"SECRET_KEY = '{SECRET_KEY}'")
+    from secret_key import SECRET_KEY
 
 SESSION_COOKIE_AGE = 60 * 60 # log out user after 1 hour
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True 
