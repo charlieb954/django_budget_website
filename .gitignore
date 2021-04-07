@@ -3,5 +3,7 @@ mysite/db.sqlite3
 mysite/main/__pycache__/
 mysite/mysite/__pycache__/
 mysite/mysite/secret_key.py
+mysite/secret_key.py
+mysite/__pycache__/
 mysite/register/__pycache__/
 mysite/register/migrations/
