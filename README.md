@@ -9,13 +9,17 @@
 
 ### how to run the django application
 1. git clone **this repo url**
-2. pip install -r requirements.txt
-3. python3 -m venv venv/ 
+2. python3 -m venv venv/ 
     - Creates an environment called venv/ you can replace “venv/” with a different name for your environment
-4. activate the virtual envrionment
-    - source venv/bin/activate
-5. cd into the cloned folder
-6. python3 manage.py runserver
+5. source venv/bin/activate
+    - activate the virtual envrionment
+4. pip install -r requirements.txt
+5. cd mysite
+    - changes directory to directory with manage.py.
+6. python3 manage.py migrate
+    - migrate changes to create models
+7. python3 manage.py runserver
+    - run the server on http://127.0.0.1:8000/ 
 
 ### screenshot examples :
 
