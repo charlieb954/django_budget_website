@@ -18,7 +18,11 @@
     - changes directory to directory with manage.py.
 6. python3 manage.py migrate
     - migrate changes to create models
-7. python3 manage.py runserver
+7. python3 manage.py makemigrations
+    - store the changes
+8. python3 manage.py migrate --run-syncdb
+    - sync database
+9. python3 manage.py runserver
     - run the server on http://127.0.0.1:8000/ 
 
 ### screenshot examples :
